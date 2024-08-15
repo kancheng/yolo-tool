@@ -1,0 +1,1 @@
+# python3 yolo-main.py --input_datasets_yaml_path="/mnt/e/.../dataset.yaml" --predict_datasets_folder="/mnt/.../"
