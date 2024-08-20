@@ -44,13 +44,12 @@ print(info_log_the_file_of_number)
 model_seg = YOLO("yolov8n-seg.pt")
 ## EX: results = model.train(data="coco8-seg.yaml", epochs=100, imgsz=640)
 results_yseg = model_seg.train(data=input_datasets_yaml_path, epochs=epochs_num, imgsz=640, batch=batch_num)
-results_yseg_model_path = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir))+"/weights/best.pt"
-
+results_yseg_model_path = os.getcwd()+"/"+str(results_yseg.save_dir)+"/weights/best.pt"
 if not os.path.exists(results_yseg_model_path):
     info_log_model = "INFO. Model training failed : " + results_yseg_model_path
 else :
     info_log_model = "INFO. The Model training successful : " + results_yseg_model_path
-log_file_path = os.getcwd()+"/"+str(results_yseg.save_dir) + "/yolo_training_log.txt"
+log_file_path = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/yolo_training_log.txt"
 log_file = open(log_file_path, 'w')
 log_file.write( info_log_files + '\n' + info_log_the_file_of_number + '\n' + info_log_model)
 log_file.close()
