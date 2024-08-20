@@ -23,7 +23,7 @@ batch_num = int(args.batch)
 
 # Build Dir.
 t = time.strftime("%Y%m%d%H%M%S", time.localtime())
-temtargetpath = '../yolo_runs_'+t
+temtargetpath = './yolo_runs_'+t
 command = "yolo settings runs_dir='"+ temtargetpath +"'" 
 os.system(command)
 
