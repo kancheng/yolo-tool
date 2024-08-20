@@ -12,11 +12,19 @@ from PIL import Image
 import json, yaml, argparse
 import shutil
 
+# Args
+# EX: python3 yolopredict2labelme.py --input_pred="./yolo_runs_202X.../segment/predict" --yolo_datasets_yaml_path="/mnt/.../dataset.yaml" --predict_img_path="/mnt/.../..."
+parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+parser.add_argument('--input_pred')
+parser.add_argument('--yolo_datasets_yaml_path')
+parser.add_argument('--predict_img_path')
+args = parser.parse_args()
+
 files = []
 info_files = []
 files_check = []
 # input_folder = './yolo_runs_202X.../segment/predict'
-input_folder = './yolo_runs_XXXXX/segment/predict'
+input_folder = args.input_pred
 input_folder_labels = input_folder + '/labels'
 for filename in os.listdir(input_folder_labels):
     if filename.endswith((".txt")):
@@ -109,18 +117,12 @@ def yolo2labelme_single(txt_path, img_path, class_labels, out_dir):
 
 new_files = []
 new_images = []
-yolo_datasets_yaml_path = '/mnt/.../dataset.yaml'
-predict_img_path = '/mnt/.../...'
+# yolo_datasets_yaml_path = '/mnt/.../dataset.yaml'
+yolo_datasets_yaml_path = args.yolo_datasets_yaml_path
+# predict_img_path = '/mnt/.../...'
+predict_img_path = args.predict_img_path
 # yolo_datasets_yaml_path = '/mnt/.../dataset.yaml'
 # predict_img_path = '/mnt/.../...'
-
-# print(equal_lists)
-
-# for filename in equal_lists:
-#     new_files.append(input_folder_labels + "/" + filename +".txt")
-#     new_images.append(predict_img_path + "/" + filename +".png")
-# print("INFO. new_files : ", new_files)
-# print("INFO. new_images : ", new_images)
 
 def ypredict2labelme(data, ptxt, ppath, key_list, out, skip=False,):
     yaml_path = os.path.join(data)
