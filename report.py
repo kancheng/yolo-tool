@@ -26,7 +26,7 @@ ymal_path = args.ypath
 original_image = args.original
 
 # predict_folder = './yolo_runs_.../segment/predict'
-predict_folder = args.ywork + "/predict'"
+predict_folder = args.ywork + "/predict"
 
 # train_folder = './yolo_runs_.../segment/train'
 train_folder = args.ywork + "/train"
