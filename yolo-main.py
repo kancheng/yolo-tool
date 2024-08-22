@@ -8,6 +8,8 @@ from PIL import Image
 import json, yaml, argparse
 import shutil
 
+from function.reportf import report_function
+
 # Args
 # EX: python3 yolo-main.py --input_datasets_yaml_path="/mnt/.../dataset.yaml" --predict_datasets_folder="/mnt/.../"
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
@@ -38,7 +40,7 @@ info_files = []
 # input_folder = args.input_dir
 for filename in os.listdir(predict_datasets_folder):
     if filename.endswith((".png", ".jpg", ".jpeg", ".bmp")):
-        info_files.append(predict_datasets_folder + filename)
+        info_files.append(predict_datasets_folder + "/"+ filename)
         files.append(filename)
 info_log_files = "INFO. Files : " + str(files)
 info_log_the_file_of_number = "INFO. The File Of Number : " + str(len(files))
@@ -165,8 +167,10 @@ def yolo2labelme_single(txt_path, img_path, class_labels, out_dir):
 
 new_files = []
 new_images = []
-yolo_datasets_yaml_path = input_datasets_yaml_path
-predict_img_path = os.path.split(predict_datasets_folder)[0]
+# yolo_datasets_yaml_path = input_datasets_yaml_path
+# predict_img_path = predict_datasets_folder
+# '/mnt/w/w/w/e/' -> '/mnt/w/w/w/e'
+# predict_img_path = os.path.split(predict_datasets_folder)[0]
 
 def ypredict2labelme(data, ptxt, ppath, key_list, out, skip=False,):
     yaml_path = os.path.join(data)
@@ -188,7 +192,24 @@ def ypredict2labelme(data, ptxt, ppath, key_list, out, skip=False,):
     print("INFO. new_files : ", len(new_files))
     print("INFO. new_images : ", len(new_images))
 
-ypredict2labelme(data = yolo_datasets_yaml_path, ptxt = input_folder_labels, ppath = predict_img_path, key_list = equal_lists, out=input_folder)
+ypredict2labelme(data = input_datasets_yaml_path, ptxt = input_folder_labels, ppath = predict_datasets_folder , key_list = equal_lists, out=input_folder)
 
+# ymal_path = '/mnt/... /dataset.yaml'
+# ymal_path = input_datasets_yaml_path
 
+# original_image = '/mnt/ ... /yolov8-datasets-predict-name'
+original_image = predict_datasets_folder
 
+# predict_folder = './yolo_runs_.../segment/predict'
+predict_folder = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/predict"
+
+# train_folder = './yolo_runs_.../segment/train'
+train_folder = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/train"
+
+# html_path = "./yolo_runs_.../segment/index-report.html"
+html_path = os.path.dirname(os.getcwd() + "/" + str(results_yseg.save_dir)) + "/report.html"
+
+# pout = "./yolo_runs_.../yolo2images"
+pout = os.path.dirname(os.getcwd() + "/" + str(results_yseg.save_dir)) + "/yolo2images"
+
+report_function(input_datasets_yaml_path, original_image, predict_folder, train_folder, html_path, pout)
