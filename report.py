@@ -123,12 +123,13 @@ def yolo2imagesbase64( pimg, ptxt):
     image = cv2.imread(pimg)
     # Read txt annotation file
     # txt_file = "./test/coco128.txt"
+    height, width, _  = image.shape
     txt_file = ptxt
     labels = read_txt_labels(txt_file)
     # Draw segmentation area
     draw_labels(image, labels)
     # Get the window size
-    window_size = (1600, 800) # You can resize the window as needed
+    window_size = (width//2, height//2) # You can resize the window as needed
     # Resize an image
     image = cv2.resize(image, window_size)
     # Create a black image the same size as the window
@@ -150,12 +151,14 @@ def yolo2images( pimg, ptxt, out):
     image = cv2.imread(pimg)
     # Read txt annotation file
     # txt_file = "./test/coco128.txt"
+    height, width, _  = image.shape
     txt_file = ptxt
     labels = read_txt_labels(txt_file)
     # Draw segmentation area
     draw_labels(image, labels)
     # Get the window size
-    window_size = (1600, 800) # You can resize the window as needed
+    # window_size = (width//2, height//2) # You can resize the window as needed
+    window_size = (width, height) # You can resize the window as needed
     # Resize an image
     image = cv2.resize(image, window_size)
     # Create a black image the same size as the window
