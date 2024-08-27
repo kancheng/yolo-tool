@@ -15,8 +15,10 @@ from function.reportf import report_function
 parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
 parser.add_argument('--input_datasets_yaml_path', help='input annotated directory')
 parser.add_argument('--predict_datasets_folder', help='predict folder')
+parser.add_argument('--name', default='dl',  help='project name')
 parser.add_argument('--epochs', default=4000,  help='epochs')
 parser.add_argument('--batch', default=2,  help='batch')
+parser.add_argument('--models', default='yolov8n-seg',  help='models name')
 args = parser.parse_args()
 
 # Settings Path.
@@ -28,12 +30,69 @@ predict_datasets_folder = args.predict_datasets_folder
 epochs_num = int(args.epochs)
 # batch
 batch_num = int(args.batch)
+# name 
+project_name = args.name
+# models name
+models_name = args.models
+models_key = ""
+# models_key = './models/' + 
+if models_name == 'yolov8n-seg' :
+    models_key = './models/' + 'yolov8n-seg.pt'
+elif models_name == 'yolov8l-seg' :
+    models_key = './models/' + 'yolov8l-seg.pt'
+elif models_name == 'yolov8l' :
+    models_key = './models/' + 'yolov8l.pt'
+elif models_name == 'yolov8m-seg' :
+    models_key = './models/' + 'yolov8m-seg.pt'
+elif models_name == 'yolov8m' :
+    models_key = './models/' + 'yolov8m.pt'
+elif models_name == 'yolov8n' :
+    models_key = './models/' + 'yolov8n.pt'
+elif models_name == 'yolov8s-seg' :
+    models_key = './models/' + 'yolov8s-seg.pt'
+elif models_name == 'yolov8s' :
+    models_key = './models/' + 'yolov8s.pt'
+elif models_name == 'yolov8x-seg' :
+    models_key = './models/' + 'yolov8x-seg.pt'
+elif models_name == 'yolov8x' :
+    models_key = './models/' + 'yolov8x.pt'
+elif models_name == 'yolov10b' :
+    models_key = './models/' + 'yolov10b.pt'
+elif models_name == 'yolov10l' :
+    models_key = './models/' + 'yolov10l.pt'
+elif models_name == 'yolov10m' :
+    models_key = './models/' + 'yolov10m.pt'
+elif models_name == 'yolov10n' :
+    models_key = './models/' + 'yolov10n.pt'
+elif models_name == 'yolov10s' :
+    models_key = './models/' + 'yolov10s.pt'
+elif models_name == 'yolov10x' :
+    models_key = './models/' + 'yolov10x.pt'
+elif models_name == 'yolov9c-seg' :
+    models_key = './models/' + 'yolov9c-seg.pt'
+elif models_name == 'yolov9c' :
+    models_key = './models/' + 'yolov9c.pt'
+elif models_name == 'yolov9e-seg' :
+    models_key = './models/' + 'yolov9e-seg.pt'
+elif models_name == 'yolov9e' :
+    models_key = './models/' + 'yolov9e.pt'
+elif models_name == 'yolov9m' :
+    models_key = './models/' + 'yolov9m.pt'
+elif models_name == 'yolov9s' :
+    models_key = './models/' + 'yolov9s.pt'
+elif models_name == 'yolov9t' :
+    models_key = './models/' + 'yolov9t.pt'
 
+# print(models_key)
+# print(models_name)
 # Build Dir.
 t = time.strftime("%Y%m%d%H%M%S", time.localtime())
-temtargetpath = './yolo_runs_'+t
+# temtargetpath = './yolo_runs_'+t
+p = os.getcwd()
+temtargetpath = p + '/yolo_runs_'+ models_name +'_'+ project_name +'_'+ t
 command = "yolo settings runs_dir='"+ temtargetpath +"'" 
 os.system(command)
+# print(temtargetpath)
 
 files = []
 info_files = []
@@ -49,7 +108,9 @@ print(info_log_the_file_of_number)
 
 # Train the model
 ## Load a model
-model_seg = YOLO("yolov8n-seg.pt")
+# model_seg = YOLO("yolov8n-seg.pt")
+model_seg = YOLO(models_key)
+
 ## EX: results = model.train(data="coco8-seg.yaml", epochs=100, imgsz=640)
 results_yseg = model_seg.train(data=input_datasets_yaml_path, epochs=epochs_num, imgsz=640, batch=batch_num)
 results_yseg_model_path = os.getcwd()+"/"+str(results_yseg.save_dir)+"/weights/best.pt"
