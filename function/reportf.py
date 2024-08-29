@@ -300,7 +300,7 @@ def report_function(ymal_path, original_image, predict_folder, train_folder, htm
 
     con_main_predict = con_main_predict_h + con_main_predict_unit + con_main_predict_t
 
-    con_main = con_main_train_h + con_main_train_c + con_main_train_t + con_main_predict
+    con_main = con_main_header + con_main_train_h + con_main_train_c + con_main_train_t + con_main_predict
 
     con_tail = "<footer>"+lt+"</footer></body></html>"
 
