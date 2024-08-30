@@ -8,7 +8,8 @@ from PIL import Image
 import json, yaml, argparse
 import shutil
 
-from function.reportf import report_function
+# from function.reportf import report_function
+from function.dashboardsf import report_function_d
 
 # Args
 # EX: python3 yolo-main.py --input_datasets_yaml_path="/mnt/.../dataset.yaml" --predict_datasets_folder="/mnt/.../"
@@ -35,53 +36,103 @@ project_name = args.name
 # models name
 models_name = args.models
 models_key = ""
-# models_key = './models/' + 
+info_log_model_type = ""
 if models_name == 'yolov8n-seg' :
     models_key = './models/' + 'yolov8n-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8l-seg' :
     models_key = './models/' + 'yolov8l-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8l' :
     models_key = './models/' + 'yolov8l.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8m-seg' :
     models_key = './models/' + 'yolov8m-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8m' :
     models_key = './models/' + 'yolov8m.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8n' :
     models_key = './models/' + 'yolov8n.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8s-seg' :
     models_key = './models/' + 'yolov8s-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8s' :
     models_key = './models/' + 'yolov8s.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8x-seg' :
     models_key = './models/' + 'yolov8x-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov8x' :
     models_key = './models/' + 'yolov8x.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10b' :
     models_key = './models/' + 'yolov10b.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10l' :
     models_key = './models/' + 'yolov10l.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10m' :
     models_key = './models/' + 'yolov10m.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10n' :
     models_key = './models/' + 'yolov10n.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10s' :
     models_key = './models/' + 'yolov10s.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov10x' :
     models_key = './models/' + 'yolov10x.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9c-seg' :
     models_key = './models/' + 'yolov9c-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9c' :
     models_key = './models/' + 'yolov9c.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9e-seg' :
     models_key = './models/' + 'yolov9e-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9e' :
     models_key = './models/' + 'yolov9e.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9m' :
     models_key = './models/' + 'yolov9m.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9s' :
     models_key = './models/' + 'yolov9s.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 elif models_name == 'yolov9t' :
     models_key = './models/' + 'yolov9t.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
+else :
+    models_key = './models/' + 'yolov8n-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 
 # print(models_key)
 # print(models_name)
@@ -113,14 +164,15 @@ model_seg = YOLO(models_key)
 
 ## EX: results = model.train(data="coco8-seg.yaml", epochs=100, imgsz=640)
 results_yseg = model_seg.train(data=input_datasets_yaml_path, epochs=epochs_num, imgsz=640, batch=batch_num)
-results_yseg_model_path = os.getcwd()+"/"+str(results_yseg.save_dir)+"/weights/best.pt"
+results_yseg_model_path = str(results_yseg.save_dir)+"/weights/best.pt"
 if not os.path.exists(results_yseg_model_path):
     info_log_model = "INFO. Model training failed : " + results_yseg_model_path
 else :
     info_log_model = "INFO. The Model training successful : " + results_yseg_model_path
-log_file_path = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/yolo_training_log.txt"
+# log_file_path = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/yolo_training_log.txt"
+log_file_path = os.path.dirname(str(results_yseg.save_dir)) + "/yolo_training_log.txt"
 log_file = open(log_file_path, 'w')
-log_file.write( info_log_files + '\n' + info_log_the_file_of_number + '\n' + info_log_model)
+log_file.write( info_log_files + '\n' + info_log_the_file_of_number + '\n' + info_log_model + '\n' + info_log_model_type)
 log_file.close()
 # Predict
 ## EX : yolo segment predict model='/mnt/../../yolov8/runs/segment/train/weights/best.pt' source='/mnt/../... .png' save_txt=True
@@ -135,7 +187,7 @@ for filename in info_files:
 files = []
 info_files = []
 files_check = []
-input_folder = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) +'/predict'
+input_folder = os.path.dirname(str(results_yseg.save_dir)) +'/predict'
 input_folder_labels = input_folder + '/labels'
 for filename in os.listdir(input_folder_labels):
     if filename.endswith((".txt")):
@@ -262,15 +314,15 @@ ypredict2labelme(data = input_datasets_yaml_path, ptxt = input_folder_labels, pp
 original_image = predict_datasets_folder
 
 # predict_folder = './yolo_runs_.../segment/predict'
-predict_folder = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/predict"
+predict_folder = os.path.dirname(str(results_yseg.save_dir)) + "/predict"
 
 # train_folder = './yolo_runs_.../segment/train'
-train_folder = os.path.dirname(os.getcwd()+"/"+str(results_yseg.save_dir)) + "/train"
+train_folder = os.path.dirname(str(results_yseg.save_dir)) + "/train"
 
 # html_path = "./yolo_runs_.../segment/index-report.html"
-html_path = os.path.dirname(os.getcwd() + "/" + str(results_yseg.save_dir)) + "/report.html"
+html_path = os.path.dirname(str(results_yseg.save_dir)) + "/report.html"
 
 # pout = "./yolo_runs_.../yolo2images"
-pout = os.path.dirname(os.getcwd() + "/" + str(results_yseg.save_dir)) + "/yolo2images"
+pout = os.path.dirname(str(results_yseg.save_dir)) + "/yolo2images"
 
-report_function(input_datasets_yaml_path, original_image, predict_folder, train_folder, html_path, pout)
+report_function_d(input_datasets_yaml_path, original_image, predict_folder, train_folder, html_path, pout)
