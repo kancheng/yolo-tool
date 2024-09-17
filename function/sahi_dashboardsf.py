@@ -158,7 +158,8 @@ def yolo2images( pimg, ptxt, out):
     cv2.imwrite(filename, image)
 
 def report_function_d(ymal_path, original_image, predict_folder, train_folder, html_path, pout):
-    predict_folder_labels = predict_folder + "/labels"
+    # predict_folder_labels = predict_folder + "/labels"
+    predict_folder_labels = predict_folder
     up_ymal_path = os.path.dirname(ymal_path)
     up_ymal_path_key = up_ymal_path + "/mes.json"
     ptxt = up_ymal_path + "/labels"
@@ -220,17 +221,11 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
     con_main_header_1 = "<body class='pagetop' onscroll='get()'><header class='topscheader'><b>Dashboard</b></header>"
     con_main_header_2 = "<header><h1 id='topgoal'>Report</h1><h5>Date. " + st + "</h5></header><main>"
     con_bar_h = "<div class='shape-ex1'><ul class='shape-ex1-list-box'><li class='shape-ex1-list listnonema'><label class='shape-ex1-list-name' for='ex1_1-checkbox'>YOLO <a href='#t1' class='aright'>HERE</a></label><input type='checkbox' name='ex1_1-input' id='ex1_1-checkbox' /><ul class='shape-ex1-list-sec-box'><li class='shape-ex1-list-sec listnonema'><label class='shape-ex1-list-sec-name' for='ex1_2_1-checkbox'>Train <a href='#t1w1' class='aright'>HERE</a></label><input type='radio' name='ex1_2-input' id='ex1_2_1-checkbox' /><ul class='shape-ex1-list-thr-box'>"
-
-    # con_bar_m = "</ul></li><li class='shape-ex1-list-sec listnonema'><label class='shape-ex1-list-sec-name' for='ex1_2_2-checkbox'>Predict <a href='#t1w2' class='aright'>HERE</a></label><input type='radio' name='ex1_2-input' id='ex1_2_2-checkbox' /><ul class='shape-ex1-list-thr-box'>"
-
     con_bar_t = "</ul></li></ul></li></ul></div>"
 
     con_bar_c1 = ""
     con_bar_c2 = ""
-
     con_sides_h = "<nav class='nav-box'><input type='checkbox'id='menu'><label for='menu'class='line'><div class='menu'></div></label><div class='menu-list'><ul>"
-    # <li> XXXX - <a href='#t1w1i" + filename + "' class='aright'>HERE</a></li>
-    # <li> XXXX - <a href='#t1w2i" + filename + "' class='aright'>HERE</a></li>
     con_sides_m_1 = ""
     con_sides_m_2 = ""
     con_sides_t = "</ul></div></nav>"
@@ -240,7 +235,6 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
     # <img src='data:image/png;base64, ' alt='... ' />
     for filename in os.listdir(train_folder):
         if filename.endswith((".png", ".jpg", ".jpeg")):
-            # tem_con_main_train_c = "<h4>" + filename + "</h4><p><img src='"+ train_folder + "/" + filename +"' alt='"+filename+"'></p>"
             # Opening an Image File
             image_path = train_folder + "/" + filename # Replace with your image file path
             img = cv2.imread(image_path)
@@ -252,7 +246,7 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
             base64_head = 'data:image/png;base64,'
             base64_main = str(base64.b64encode(image))[2:-1]
             image_code = base64_head + base64_main
-            print("OpenCV resizes the image to base64 length ：%d"%len(image_code))
+            print("OpenCV resizes the image to base64 length : %d"%len(image_code))
             # print(image_code)
             tem_con_main_train_c = "<h4 id='t1w1i"+ filename +"'>" + filename + "</h4><p><img src='" + image_code + "' alt='" + filename + "' /></p><p><a href='#topgoal'>[TOP]</a></p>"
             tem_con_bar_c1 = "<li class='shape-ex1-list-thr-name listnonema'><span>" + filename + " <a href='#t1w1i" + filename + "' class='aright'>HERE</a></span></li>"
@@ -262,29 +256,26 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
             con_main_train_c = con_main_train_c + tem_con_main_train_c
             print(train_folder + "/" + filename)
 
-# <li class='shape-ex1-list-thr-name listnonema'><span>Image 1 <a href='#t1w1i1' class='aright'>HERE</a></span></li>
-# <h4 id='t1w1i2'>Image 2</h4><p><img src='./cow.jpg' alt='cow.jpg'></p>
-
     con_main_train_h = "<article><header><h1>Info.</h1></header><p>Machine learning image visual segmentation analysis. <br /> Dataset Path : "+ ymal_path +"<br /> Predict Folder Path : " + predict_folder + "</p></article><article><header><h1 id='t1'>YOLO</h1></header><p>You Only Look Once (YOLO) is a state-of-the-art, real-time object detection algorithm introduced in 2015 by Joseph Redmon, Santosh Divvala, Ross Girshick, and Ali Farhadi in their famous research paper 'You Only Look Once: Unified, Real-Time Object Detection'. </p></article><article><header><h3 id='t1w1'>Train</h3></header><div><hr></div>"
 
     con_main_train_t = "</article>"
     # <header><h3 id='t1w2'>Predict</h3></header><div><hr></div>
     con_main_predict_h = "<article><header><h3 id='t1w2'>Predict</h3></header><div><hr></div>"
 
-    files = []
-    info_files = []
-    files_check = []
-    # input_folder = './yolo_runs_202X.../segment/predict'
-    input_folder_labels = predict_folder_labels
-    for filename in os.listdir(predict_folder_labels):
-        if filename.endswith((".txt")):
-            info_files.append(predict_folder_labels + "/" + filename)
-            files.append(filename) 
-            for con in files:
-                files_check.append(con.split(".")[0])
-    print("INFO. Files - TXT : ", files)
-    print("INFO. The File Of Number - TXT : ", len(files))
-    print("INFO. TXT Path : ", info_files)
+    # files = []
+    # info_files = []
+    # files_check = []
+    # # input_folder = './yolo_runs_202X.../segment/predict'
+    # input_folder_labels = predict_folder_labels
+    # for filename in os.listdir(predict_folder_labels):
+    #     if filename.endswith((".txt")):
+    #         info_files.append(predict_folder_labels + "/" + filename)
+    #         files.append(filename) 
+    #         for con in files:
+    #             files_check.append(con.split(".")[0])
+    # # print("INFO. Files - TXT : ", files)
+    # # print("INFO. The File Of Number - TXT : ", len(files))
+    # # print("INFO. TXT Path : ", info_files)
 
     images = []
     info_images = []
@@ -298,8 +289,10 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
     print("INFO. Images: ", images)
     print("INFO. The Images Of Number : ", len(images))
     print("INFO. Images Path : ", info_images)
-    equal_lists = list(set(files_check).intersection(set(images_check)))
+    # equal_lists = list(set(files_check).intersection(set(images_check)))
+    equal_lists = list(set(images_check))
     print(equal_lists)
+    print(len(equal_lists))
     con_main_predict_unit = ""
 
 
@@ -312,7 +305,6 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
     for filename in equal_lists:
         print(filename)
         image_path = predict_folder + "/" + filename + ".png"
-        yplabels_path = predict_folder + "/labels/" + filename + ".txt"
         original_image_path = original_image + "/" + filename + ".png"
         predict_folder_labels_path = predict_folder_labels + "/" + filename + ".png"
         # Original image
@@ -325,7 +317,7 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
         base64_head = 'data:image/png;base64,'
         base64_main = str(base64.b64encode(image))[2:-1]
         original_image_code = base64_head + base64_main
-        print("OpenCV resizes the image to base64 length ：%d"%len(original_image_code))
+        print("OpenCV resizes the image to base64 length : %d"%len(original_image_code))
         # YOLO2images
         tar = resdir + "/" + filename + ".png"
         img = cv2.imread(tar)
@@ -337,7 +329,7 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
         base64_head = 'data:image/png;base64,'
         base64_main = str(base64.b64encode(image))[2:-1]
         yoloraw_image_code = base64_head + base64_main
-        print("OpenCV resizes the image to base64 length ：%d"%len(yoloraw_image_code))
+        print("OpenCV resizes the image to base64 length : %d"%len(yoloraw_image_code))
         # Predict
         img = cv2.imread(image_path)
         h,w,_ = img.shape
@@ -363,34 +355,15 @@ def report_function_d(ymal_path, original_image, predict_folder, train_folder, h
         con_main_predict_unit = con_main_predict_unit + tem_con_main_predict_unit
         predict_images_path.append( predict_folder + "/" + filename + ".png")
     # print(predict_images_path)
-
-    # con_main_predict ="<h4>TEST.png</h4><p><div class='out'><div class='mm'>Original image<br/><img src='./TEST.png' alt='Original image'></div><div class='mm'>YOLO label image<br/><img src='./TEST.png' alt='YOLO label image'></div><div class='mm'>YOLO training results image<br/><img src='./TEST.png' alt='YOLO training results image'></div></div><!-- IOU : --></p></article></main>"
-
-
     con_sides_all = con_sides_h + con_sides_m_1 + con_sides_m_2 + con_sides_t
-
     con_bar_all = con_bar_h + con_bar_c1 + con_bar_m + con_bar_c2 + con_bar_t
-
     con_main_predict_t = "</main>"
-
     con_main_predict = con_main_predict_h + con_main_predict_unit + con_main_predict_t
-
     con_main = con_main_header_1 + con_sides_all + con_main_header_2 + con_bar_all + con_main_train_h + con_main_train_c + con_main_train_t + con_main_predict
-
     con_tail = "<footer>"+lt+"</footer></body></html><button class='huge-btn totop topbtn'><b class='topbtnsize'>^</b></button><script> function get(){var topverb1=document.documentElement.scrollTop;var topverb2=document.body.scrollHeight;if(topverb1>=topverb2/8){document.querySelector('.topbtn').style.display='inherit'}else{document.querySelector('.topbtn').style.display='none'}} document.querySelector('.totop').onclick=function(){document.querySelector('.pagetop').scrollIntoView(true)} </script><script type='text/javascript'> var bodyClass = document.body.classList, lastScrollY = 0; window.addEventListener('scroll', function(){ var st = this.scrollY; if( st < lastScrollY) { bodyClass.remove('hideUp');} else { bodyClass.add('hideUp');} lastScrollY = st;});</script></body></html>"
-
     con_all = cont_head + con_main + con_tail
-
     file = open(html_path, 'w')
     file.write(con_all)
     file.close()
 
 
-
-# ymal_path = '/mnt/... /dataset.yaml'
-# original_image = '/mnt/ ... /yolov8-datasets-predict-name'
-# predict_folder = './yolo_runs_.../segment/predict'
-# train_folder = './yolo_runs_.../segment/train'
-# html_path = "./yolo_runs_.../segment/predict/index.html"
-# pout = "./yolo_runs_.../yolo2images"
-# report_function_d(ymal_path, original_image, predict_folder, train_folder, html_path, pout)

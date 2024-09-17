@@ -19,10 +19,10 @@ def read_txt_labels(txt_file):
         for line in f.readlines():
             label_data = line.strip().split(" ")
             class_id = int(label_data[0])
-            if int(label_data[0]) == 0:
-                continue
-            else :
-                class_id = int(label_data[0])
+            # if int(label_data[0]) == 0:
+            #     continue
+            # elif int(label_data[0]) != 0:
+            #     class_id = int(label_data[0])
             # Parsing bounding box coordinates
             coordinates = [float(x) for x in label_data[1:]]
             labels.append([class_id, coordinates])
