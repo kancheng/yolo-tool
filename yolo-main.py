@@ -129,6 +129,26 @@ elif models_name == 'yolov9t' :
     models_key = './models/' + 'yolov9t.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
+elif models_name == 'yolov11l-seg' :
+    models_key = './models/' + 'yolov11l-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
+elif models_name == 'yolov11m-seg' :
+    models_key = './models/' + 'yolov11m-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
+elif models_name == 'yolov11n-seg' :
+    models_key = './models/' + 'yolov11n-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
+elif models_name == 'yolov11s-seg' :
+    models_key = './models/' + 'yolov11s-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
+elif models_name == 'yolov11x-seg' :
+    models_key = './models/' + 'yolov11x-seg.pt'
+    info_log_model_type = "INFO. Model Type : " + models_key
+    print(info_log_model_type)
 else :
     models_key = './models/' + 'yolov8n-seg.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
