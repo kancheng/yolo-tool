@@ -19,7 +19,7 @@ parser.add_argument('--predict_datasets_folder', help='predict folder')
 parser.add_argument('--name', default='dl',  help='project name')
 parser.add_argument('--epochs', default=4000,  help='epochs')
 parser.add_argument('--batch', default=2,  help='batch')
-parser.add_argument('--models', default='yolov8n-seg',  help='models name')
+parser.add_argument('--models', default='yolo11n-seg',  help='models name')
 args = parser.parse_args()
 
 # Settings Path.
@@ -77,28 +77,28 @@ elif models_name == 'yolov8x' :
     models_key = './models/' + 'yolov8x.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10b' :
-    models_key = './models/' + 'yolov10b.pt'
+elif models_name == 'yolo10b' :
+    models_key = './models/' + 'yolo10b.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10l' :
-    models_key = './models/' + 'yolov10l.pt'
+elif models_name == 'yolo10l' :
+    models_key = './models/' + 'yolo10l.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10m' :
-    models_key = './models/' + 'yolov10m.pt'
+elif models_name == 'yolo10m' :
+    models_key = './models/' + 'yolo10m.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10n' :
-    models_key = './models/' + 'yolov10n.pt'
+elif models_name == 'yolo10n' :
+    models_key = './models/' + 'yolo10n.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10s' :
-    models_key = './models/' + 'yolov10s.pt'
+elif models_name == 'yolo10s' :
+    models_key = './models/' + 'yolo10s.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov10x' :
-    models_key = './models/' + 'yolov10x.pt'
+elif models_name == 'yolo10x' :
+    models_key = './models/' + 'yolo10x.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
 elif models_name == 'yolov9c-seg' :
@@ -129,28 +129,8 @@ elif models_name == 'yolov9t' :
     models_key = './models/' + 'yolov9t.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
-elif models_name == 'yolov11l-seg' :
-    models_key = './models/' + 'yolov11l-seg.pt'
-    info_log_model_type = "INFO. Model Type : " + models_key
-    print(info_log_model_type)
-elif models_name == 'yolov11m-seg' :
-    models_key = './models/' + 'yolov11m-seg.pt'
-    info_log_model_type = "INFO. Model Type : " + models_key
-    print(info_log_model_type)
-elif models_name == 'yolov11n-seg' :
-    models_key = './models/' + 'yolov11n-seg.pt'
-    info_log_model_type = "INFO. Model Type : " + models_key
-    print(info_log_model_type)
-elif models_name == 'yolov11s-seg' :
-    models_key = './models/' + 'yolov11s-seg.pt'
-    info_log_model_type = "INFO. Model Type : " + models_key
-    print(info_log_model_type)
-elif models_name == 'yolov11x-seg' :
-    models_key = './models/' + 'yolov11x-seg.pt'
-    info_log_model_type = "INFO. Model Type : " + models_key
-    print(info_log_model_type)
 else :
-    models_key = './models/' + 'yolov8n-seg.pt'
+    models_key = './models/' + 'yolo11n-seg.pt'
     info_log_model_type = "INFO. Model Type : " + models_key
     print(info_log_model_type)
 
@@ -208,6 +188,37 @@ files = []
 info_files = []
 files_check = []
 input_folder = os.path.dirname(str(results_yseg.save_dir)) +'/predict'
+
+# 取得資料夾中的所有檔案
+pred_files = os.listdir(input_folder)
+# 過濾出支援的圖檔格式
+supported_formats = ('.jpg', '.jpeg', '.bmp', '.tiff', '.gif', '.png')
+image_files = [f for f in pred_files if f.lower().endswith(supported_formats)]
+
+if not image_files:
+    print("資料夾中沒有圖檔，沒有動作。")
+else:
+    for file_name in image_files:
+        # 若檔案已為 png，則不進行任何操作
+        if file_name.lower().endswith('.png'):
+            print(f"{file_name} 已為 PNG 格式，跳過。")
+            continue
+
+        file_path = os.path.join(input_folder, file_name)
+        try:
+            # 開啟並轉換圖片為 RGB 模式
+            with Image.open(file_path) as img:
+                img = img.convert('RGB')
+                # 建立新的 PNG 檔案路徑
+                new_file_path = os.path.splitext(file_path)[0] + '.png'
+                img.save(new_file_path, 'PNG')
+                print(f"{file_name} 已轉換為 {os.path.basename(new_file_path)}")
+            # 移除原始檔案
+            os.remove(file_path)
+            print(f"已移除原始檔案: {file_name}")
+        except Exception as e:
+            print(f"{file_name} 轉換失敗: {e}")
+
 input_folder_labels = input_folder + '/labels'
 for filename in os.listdir(input_folder_labels):
     if filename.endswith((".txt")):
